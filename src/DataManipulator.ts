@@ -1,8 +1,12 @@
 import { ServerRespond } from './DataStreamer';
 
 export interface Row {
-  stock: string,
-  top_ask_price: number,
+  price_abc: number,
+  price_def: number,
+  ratio: number,
+  trigger_alert: number | undefined,
+  upper_bound: number,
+  lower_bound: number,
   timestamp: Date,
 }
 
@@ -11,9 +15,14 @@ export class DataManipulator {
   static generateRow(serverResponds: ServerRespond[]) {
     return serverResponds.map((el: any) => {
       return {
-        stock: el.stock,
-        top_ask_price: el.top_ask && el.top_ask.price || 0,
-        timestamp: el.timestamp,
+        price_abc: priceABC,
+        price_def: priceDEF,
+        ratio,
+        trigger_alert: (ration>upperBound || ration <lowerBound)?ratio:undefined,
+        upper_bound: upperBound,
+        lower_bound: lowerBound,
+        timestamp: serverRespond[0].timestamp > serverRespond[1].timestamp?serverRespond[0].timestamp:serverRespond[1].timestamp,
+      }
       };
     })
   }
